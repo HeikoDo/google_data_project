@@ -104,7 +104,7 @@ if 1:
 
     # show the map
     plt.savefig(
-        "./google_location_history_world_map.png",
+        "pics/google_location_history_world_map.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.2,
@@ -161,7 +161,7 @@ if 1:
     )
 
     plt.savefig(
-        "./google_location_history_cng_map.png",
+        "pics/google_location_history_cng_map.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.2,
@@ -170,19 +170,19 @@ if 1:
     # profile = pf.ProfileReport(df_gps, title="Report of my GPS-Data", correlations=None)
     # profile.to_file("profile_report.html")
     profile = pf.ProfileReport(df_gps, title="Report of my GPS-Data", minimal=True)
-    profile.to_file("profile_report.html")
+    profile.to_file("html/profile_report.html")
 
 
-if 0:
+if 1:  # Print Datashader Map
     print(df_gps.head())
     cvs = ds.Canvas(plot_width=850, plot_height=500)
     agg = cvs.points(df_gps, "lon", "lat")
     img = ds.tf.shade(agg, cmap=colorcet.CET_L4[::-1], how="eq_hist")
     ds.utils.export_image(
-        img=img, filename="histo", fmt=".png", background=None, export_path="."
+        img=img, filename="histo", fmt=".png", background=None, export_path="pics"
     )
 
-if 0:
+if 1:  # Print Data as Points (for performance, frac=0.001)
     subset = df_gps.sample(frac=0.001)
     print("There are {:,} rows in the location history dataset".format(len(subset)))
     print(subset.head())
@@ -196,7 +196,9 @@ if 0:
         ylabel="Latitude",
         hover_cols=list(subset.columns),
     )
-    show(hv.render(hv_plot))
+
+    html_points = hv.render(hv_plot)
+    show(html_points)
 
     # import panel as pn
     # pn.serve(hv_plot)
@@ -205,7 +207,7 @@ if 0:
     #     hv.opts.Tiles(xaxis=None, yaxis=None, width=225, height=225)).cols(4)
     # show(hv.render(hv_tiles))
 
-if 1:
+if 0:  # Datashader geht noch nicht
     esri = (
         hv.element.tiles.ESRI()
         .redim(x="easting", y="northing")
